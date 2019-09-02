@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  web:
+    build: web/
+#    command: sleep 6000
+    command: python /code/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./web/helloworld:/code
+    ports:
+      - 8000:8000
