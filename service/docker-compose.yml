@@ -1,6 +1,12 @@
 version: '3.7'
 
 services:
+  nginx:
+    build: nginx/
+    command: nginx -g 'daemon off;'
+    ports:
+      - 80:80
+
   web:
     build: web/
 #    command: sleep 6000
