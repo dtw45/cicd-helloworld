@@ -8,7 +8,7 @@ jobs:
        - docker build -t service_web:latest service/web
        - docker up -d service_web_1
        - docker ps -a
-     script: docker exec /code/manage.py test --keepdb pages
+     script: tree && docker exec /code/manage.py test --keepdb pages
      after_sucess:
        - docker stop service_web_1
        - docker ps -a
