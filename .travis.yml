@@ -17,4 +17,4 @@ jobs:
      services: docker
      script: docker build -t service_web:latest service/web
      script: docker build -t service_nginx:latest service/nginx
-
+ 
