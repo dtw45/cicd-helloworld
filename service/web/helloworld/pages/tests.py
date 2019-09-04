@@ -10,5 +10,5 @@ class ViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_boolean(self):
-        self.assertEqual(True, True)
+        self.assertEqual(False, True)
 
