@@ -4,7 +4,7 @@ jobs:
   include:
    - stage: test
      install: pip3 install -r service/web/requirements.txt
-     script: python3 service/web/helloworld/manage.py test pages
+     script: python3 service/web/helloworld/manage.py test --keepdb pages
    - stage: build
      services: docker
      script:
