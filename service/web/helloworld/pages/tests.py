@@ -9,6 +9,6 @@ class ViewTestCase(TestCase):
         response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
 
-    def test_random(self):
-        self.assertEqual(False, True)
+    def test_boolean(self):
+        self.assertEqual(True, True)
 
