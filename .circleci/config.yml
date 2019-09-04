@@ -13,10 +13,36 @@ jobs:
             docker-compose build web
             docker-compose up -d web
             docker-compose exec web python /code/manage.py test pages
+  build_web:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Build web
+          docker:
+            - image: docker:stable
+          command: |
+            cd service
+            docker-compose build web
+  build_nginx:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Build nginx
+          docker:
+            - image: docker:stable
+          command: |
+            cd service
+            docker-compose build nginx
 
 workflows:
   version: 2
   test:
     jobs:
       - test
+  build:
+    jobs:
+      - build_web
+      - build_nginx
 
