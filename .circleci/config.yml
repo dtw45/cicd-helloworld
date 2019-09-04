@@ -12,7 +12,7 @@ jobs:
             cd service
             docker-compose build web
             docker-compose up -d web
-            docker-compose exec web python /code/helloworld/manage.py pages
+            docker-compose exec web python /code/manage.py pages
 
 workflows:
   version: 2
