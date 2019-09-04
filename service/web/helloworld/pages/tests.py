@@ -1,5 +1,3 @@
-import random
-
 from django.test import Client, TestCase
 from django.urls import reverse
 
@@ -12,6 +10,5 @@ class ViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_random(self):
-        result = random.choice((True, False))
-        self.assertEqual(result, True)
+        self.assertEqual(False, True)
 
