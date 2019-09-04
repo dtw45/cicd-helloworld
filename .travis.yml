@@ -6,7 +6,7 @@ jobs:
      services: docker
      before_install:
        - cd service
-       - docker build -t service_web:latest service/web
+       - docker-compose build web
        - docker-compose up -d web
        - docker ps -a
      script: docker exec /code/manage.py test --keepdb pages
