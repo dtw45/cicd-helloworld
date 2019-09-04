@@ -3,8 +3,15 @@ python: 3.7
 jobs:
   include:
    - stage: test
-     install: pip3 install -r service/web/requirements.txt
-     script: python3 service/web/helloworld/manage.py test --keepdb pages
+     services: docker
+     before_install:
+       - docker build -t service_web:latest service/web
+       - docker up -d service_web_1
+       - docker ps -a
+     script: docker exec /code/manage.py test --keepdb pages
+     after_sucess:
+       - docker stop service_web_1
+       - docker ps -a
    - stage: build
      services: docker
      script:
