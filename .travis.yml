@@ -3,10 +3,15 @@ language: python
 
 python: 3.7
 
+env:
+  global:
+    - DOCKER_CACHE=$HOME/docker
+    - WEB_CACHE=$DOCKER_CACHE/service_web:latest
+
 cache:
   bundler: true
   directories:
-    - $HOME/docker
+    - $DOCKER_CACHE
 
 jobs:
   include:
@@ -29,12 +34,12 @@ jobs:
       name: web (with cache)
       services: docker
       before_install: >
-        if [[ -d $HOME/docker ]]; then zcat $HOME/docker/service_web:latest.tar.gz | docker load; fi
+        if [[ -f $WEB_CACHE ]]; then zcat $WEB_CACHE | docker load; fi
       script: >
         docker build -t service_web:latest --cache-from service_web:latest service/web
       before_cache: >
         mkdir -p $HOME/docker &&
-        docker save service_web:latest | gzip -2 > "$HOME/docker/service_web:latest.tar.gz"
+        docker save service_web:latest | gzip -2 > "$WEB_CACHE"
     - stage: build
       name: nginx
       services: docker
