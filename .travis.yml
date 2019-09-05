@@ -1,7 +1,5 @@
 language: python
-
 python: 3.7
-
 jobs:
   include:
    - stage: test
@@ -15,7 +13,6 @@ jobs:
      after_sucess:
        - docker-compose stop web
        - docker ps -a
-
   - stage: build
      services: docker
      script: docker build -t service_web:latest service/web
