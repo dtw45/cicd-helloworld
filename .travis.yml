@@ -13,9 +13,6 @@ jobs:
      after_sucess:
        - docker-compose stop web
        - docker ps -a
-  - stage: build
-     services: docker
-     script: docker build -t service_web:latest service/web
    - stage: build
      services: docker
      script: docker build -t service_web:latest service/web
