@@ -28,17 +28,13 @@ jobs:
     - stage: build
       name: web (with cache)
       services: docker
-      before_cache: >
-        mkdir -p $HOME/docker &&
-        docker images -a --filter='dangling=false' --format '{{.Repository}}:{{.Tag}} {{.ID}}' |
-        xargs -n 2 -t sh -c 'test -e $HOME/docker/$1.tar.gz ||
-        docker save $0 |
-        gzip -2 > $HOME/docker/$1.tar.gz'
       before_install: >
-        if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar.gz |
-        xargs -I {file} sh -c "zcat {file} | docker load"; fi
+        if [[ -d $HOME/docker ]]; then zcat $HOME/docker/service_web:latest.tar.gz | docker load; fi
       script: >
         docker build -t service_web:latest --cache-from service_web:latest service/web
+      before_cache: >
+        mkdir -p $HOME/docker &&
+        docker save service_web:latest | gzip -2 > "$HOME/docker/service_web:latest.tar.gz"
     - stage: build
       name: nginx
       services: docker
