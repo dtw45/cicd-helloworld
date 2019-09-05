@@ -39,7 +39,11 @@ jobs:
       before_install: >
         if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar.gz |
         xargs -I {file} sh -c "zcat {file} | docker load"; fi
-      script: docker build -t service_web:latest service/web
+      script: >
+        docker build
+            -t service_web:latest
+            --cache-from service_web:latest
+            service/web
     - stage: build
       name: nginx
       services: docker
