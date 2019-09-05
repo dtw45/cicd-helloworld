@@ -1,5 +1,7 @@
 language: python
+
 python: 3.7
+
 jobs:
   include:
    - stage: test
@@ -7,16 +9,20 @@ jobs:
      install:
        - cd service
        - docker-compose build web
-       - docker-compose build web
        - docker-compose up -d web
        - docker ps -a
      script: docker-compose exec web /code/manage.py test --keepdb pages
      after_sucess:
        - docker-compose stop web
        - docker ps -a
+
+  - stage: build
+     services: docker
+     script: docker build -t service_web:latest service/web
    - stage: build
      services: docker
-     script:
-       - docker build -t service_web:latest service/web
-       - docker build -t service_nginx:latest service/nginx
+     script: docker build -t service_web:latest service/web
+   - stage: build
+     services: docker
+     script: docker build -t service_nginx:latest service/nginx
 
