@@ -1,22 +1,46 @@
+---
 language: python
+
 python: 3.7
+
+cache:
+  bundler: true
+  directories:
+    - $HOME/docker
+
 jobs:
   include:
-   - stage: test
-     services: docker
-     install:
-       - cd service
-       - docker-compose build web
-       - docker-compose up -d web
-       - docker ps -a
-     script: docker-compose exec web /code/manage.py test --keepdb pages
-     after_sucess:
-       - docker-compose stop web
-       - docker ps -a
-   - stage: build
-     services: docker
-     script: docker build -t service_web:latest service/web
-   - stage: build
-     services: docker
-     script: docker build -t service_nginx:latest service/nginx
-
+    - stage: test
+      services: docker
+      install:
+        - cd service
+        - docker-compose build web
+        - docker-compose up -d web
+        - docker ps -a
+      script: docker-compose exec web /code/manage.py test --keepdb pages
+      after_sucess:
+        - docker-compose stop web
+        - docker ps -a
+    - stage: build
+      name: web
+      services: docker
+      script: docker build -t service_web:latest service/web
+    - stage: build
+      name: web (with cache)
+      services: docker
+      before_cache: >
+        mkdir -p $HOME/docker &&
+        docker images -a
+            --filter='dangling=false'
+            --format '{{.Repository}}:{{.Tag}} {{.ID}}' |
+        xargs -n 2 -t sh -c 'test -e $HOME/docker/$1.tar.gz ||
+        docker save $0 |
+        gzip -2 > $HOME/docker/$1.tar.gz'
+      before_install: >
+        if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar.gz |
+        xargs -I {file} sh -c "zcat {file} | docker load"; fi
+      script: docker build -t service_web:latest service/web
+    - stage: build
+      name: nginx
+      services: docker
+      script: docker build -t service_nginx:latest service/nginx
