@@ -37,3 +37,4 @@ jobs:
      name: nginx
      services: docker
      script: docker build -t service_nginx:latest service/nginx
+
