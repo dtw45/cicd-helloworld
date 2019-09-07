@@ -1,6 +1,7 @@
 #! /bin/bash
 
-DDOCKER_CACHE=$1
+
+# IMAGES_TO_CACHE=$2
 
 mkdir -p $DOCKER_CACHE
 
