@@ -38,7 +38,4 @@ jobs:
       script: >
         docker build -t service_web:latest --cache-from service_web:latest service/web
       before_cache: ./travis/cache_service.sh $DOCKER_CACHE
-    - stage: build
-      name: nginx
-      services: docker
-      script: docker build -t service_nginx:latest service/nginx
+    - script: docker build -t service_nginx:latest service/nginx
